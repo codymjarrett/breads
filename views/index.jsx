@@ -3,8 +3,9 @@ const Default = require('./layouts/Default')
 
 function Index (props) {
     const breads = props.breads;
+    const title = props.title;
     return (
-      <Default>
+      <Default title={title}>
           <ul>
           {breads.map((bread, index) => {
               return (
