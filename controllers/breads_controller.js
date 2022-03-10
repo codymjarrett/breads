@@ -12,7 +12,14 @@ breads.get('/', (req, res) => {
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
     const pickedBread = Bread[Number(req.params.arrayIndex)]
-    res.send(pickedBread)
+
+    if(pickedBread){
+      res.render('Show', {
+        bread: pickedBread
+      })
+    } else {
+      res.send('404')
+    }
 })
 
 module.exports = breads
