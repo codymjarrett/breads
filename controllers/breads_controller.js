@@ -9,17 +9,47 @@ breads.get('/', (req, res) => {
   // res.send(Bread)
 })
 
+// NEW
+breads.get('/new', (req, res) => {
+  res.render('new')
+})
+
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
     const pickedBread = Bread[Number(req.params.arrayIndex)]
 
     if(pickedBread){
       res.render('Show', {
-        bread: pickedBread
+        bread: pickedBread,
+        index: req.params.arrayIndex
       })
     } else {
-      res.send('404')
+      res.render('404')
     }
+})
+
+// CREATE
+breads.post('/', (req, res) => {
+ const hasImage = req.body.image;
+
+ if (!hasImage){
+   req.body.image = 'https://media.istockphoto.com/photos/detailed-closeup-of-sliced-grain-bread-on-white-background-picture-id157587362?s=612x612'
+ }
+
+  console.log(req.body)
+  if(req.body.hasGluten === 'on') {
+    req.body.hasGluten = true
+  } else {
+    req.body.hasGluten = false
+  }
+  Bread.push(req.body)
+  res.redirect('/breads')
+})
+
+// DELETE  breads/:id
+breads.delete('/:indexArray', (req, res) => {
+  Bread.splice(req.params.indexArray, 1)
+  res.status(303).redirect('/breads')
 })
 
 module.exports = breads
