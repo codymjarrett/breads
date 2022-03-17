@@ -2,10 +2,14 @@ const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
 
-// INDEX
+
 // INDEX
 breads.get('/', (req, res) => {
-    res.render('index', {breads: Bread, title: 'Index Page'})
+  Bread.find().then(foundBread => {
+    res.render('index', {breads: foundBread, title: 'Index Page'})
+    
+  })
+
   // res.send(Bread)
 })
 
@@ -14,13 +18,7 @@ breads.get('/new', (req, res) => {
   res.render('new')
 })
 
-// EDIT - example: breads/2/edit
-breads.get('/:indexArray/edit', (req, res) => {
-  res.render('edit', {
-    bread: Bread[req.params.indexArray],
-    index: req.params.indexArray
-  })
-})
+
 
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
@@ -34,6 +32,14 @@ breads.get('/:arrayIndex', (req, res) => {
     } else {
       res.render('404')
     }
+})
+
+// EDIT - example: breads/2/edit
+breads.get('/:indexArray/edit', (req, res) => {
+  res.render('edit', {
+    bread: Bread[req.params.indexArray],
+    index: req.params.indexArray
+  })
 })
 
 // CREATE

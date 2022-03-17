@@ -8,3 +8,11 @@ body {
     margin: auto;
   }
   
+  .show-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  header h1  {
+    text-align: center;
+  }
