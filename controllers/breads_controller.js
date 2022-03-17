@@ -21,17 +21,12 @@ breads.get('/new', (req, res) => {
 
 
 // SHOW
-breads.get('/:arrayIndex', (req, res) => {
-    const pickedBread = Bread[Number(req.params.arrayIndex)]
-
-    if(pickedBread){
-      res.render('Show', {
-        bread: pickedBread,
-        index: req.params.arrayIndex
-      })
-    } else {
-      res.render('404')
-    }
+breads.get('/:id', (req, res) => {
+   Bread.findById(req.params.id).then(foundBread => {
+     res.render('show', {
+       bread: foundBread,
+     })
+   })
 })
 
 // EDIT - example: breads/2/edit
@@ -45,18 +40,19 @@ breads.get('/:indexArray/edit', (req, res) => {
 // CREATE
 breads.post('/', (req, res) => {
  const hasImage = req.body.image;
-
+ 
  if (!hasImage){
-   req.body.image = 'https://media.istockphoto.com/photos/detailed-closeup-of-sliced-grain-bread-on-white-background-picture-id157587362?s=612x612'
+   req.body.image = undefined
+   console.log('Body', req.body)
+  //  req.body.image = 'https://media.istockphoto.com/photos/detailed-closeup-of-sliced-grain-bread-on-white-background-picture-id157587362?s=612x612'
  }
 
-  console.log(req.body)
   if(req.body.hasGluten === 'on') {
     req.body.hasGluten = true
   } else {
     req.body.hasGluten = false
   }
-  Bread.push(req.body)
+  Bread.create(req.body)
   res.redirect('/breads')
 })
 

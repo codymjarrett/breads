@@ -10,10 +10,10 @@ function Index (props) {
                 <a href="/breads/new"><button>Add a new bread</button></a>
         </div>
           <ul>
-          {breads.map((bread, index) => {
+          {breads.map((bread) => {
               return (
-              <li key={index}>
-                  <a href={`/breads/${index}`}>{bread.name}</a>
+              <li key={bread.id}>
+                  <a href={`/breads/${bread.id}`}>{bread.name}</a>
              </li>
               )
           })}
