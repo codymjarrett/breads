@@ -1,6 +1,7 @@
 const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
+const Baker = require('../models/baker.js')
 
 
 // INDEX
@@ -15,14 +16,22 @@ breads.get('/', (req, res) => {
 
 // NEW
 breads.get('/new', (req, res) => {
-  res.render('new')
+  Baker.find()
+  .then(foundBakers => {
+    res.render('new', {
+      bakers: foundBakers
+    })
+  })
 })
 
 
 
 // SHOW
 breads.get('/:id', (req, res) => {
-   Bread.findById(req.params.id).then(foundBread => {
+   Bread.findById(req.params.id)
+   .populate('baker')
+   .then(foundBread => {
+     console.log('foundBread', foundBread)
      res.render('show', {
        bread: foundBread,
      })
@@ -32,10 +41,15 @@ breads.get('/:id', (req, res) => {
 })
 
 // EDIT - example: breads/2/edit
-breads.get('/:indexArray/edit', (req, res) => {
-  res.render('edit', {
-    bread: Bread[req.params.indexArray],
-    index: req.params.indexArray
+breads.get('/:id/edit', (req, res) => {
+  Baker.find().then(foundBakers => {
+    Bread.findById(req.params.id) 
+      .then(foundBread => { 
+        res.render('edit', {
+          bread: foundBread,
+          bakers: foundBakers
+        })
+      })
   })
 })
 
@@ -65,15 +79,20 @@ breads.delete('/:indexArray', (req, res) => {
 })
 
 // UPDATE breads/:id
-breads.put('/:arrayIndex', (req, res) => {
+breads.put('/:id', (req, res) => {
   if(req.body.hasGluten === 'on'){
     req.body.hasGluten = true
   } else {
     req.body.hasGluten = false
   }
-  Bread[req.params.arrayIndex] = req.body
-  res.redirect(`/breads/${req.params.arrayIndex}`)
+  Bread.findByIdAndUpdate(req.params.id, req.body, { new: true }) 
+    .then(updatedBread => {
+      console.log(updatedBread) 
+      res.redirect(`/breads/${req.params.id}`) 
+    })
 })
+
+
 
 
 

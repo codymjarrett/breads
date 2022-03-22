@@ -25,6 +25,8 @@ function Show ({bread}) {
           </p>
           <div>
           <img src={bread.image} alt={bread.name} />
+          <p>{bread.getBakedBy()}</p>
+
           </div>
           </div>
         </div>
