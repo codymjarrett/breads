@@ -1,6 +1,9 @@
 {
   "name": "breads",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.15.5"
+  },
   "description": "Teaching my class how to create an express application",
   "main": "server.js",
   "scripts": {
